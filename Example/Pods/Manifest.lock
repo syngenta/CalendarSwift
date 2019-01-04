@@ -1,0 +1,16 @@
+PODS:
+  - CalendarSwift (0.1.0)
+
+DEPENDENCIES:
+  - CalendarSwift (from `../`)
+
+EXTERNAL SOURCES:
+  CalendarSwift:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CalendarSwift: 3d4915d77047e695bb794eb5d4bd4c34362c5af7
+
+PODFILE CHECKSUM: 4f8d072ccc2aadd9b781f6d187fbaf84812ef7ee
+
+COCOAPODS: 1.6.0.beta.2
