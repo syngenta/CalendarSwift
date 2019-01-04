@@ -1,22 +1,23 @@
 {
   "name": "CalendarSwift",
   "version": "0.1.0",
-  "summary": "A short description of CalendarSwift.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/raketenok@gmail.com/CalendarSwift",
+  "summary": "Custom calendar",
+  "description": "'Custom calendar for iOS.'",
+  "homepage": "https://github.com/raketenok/CalendarSwift",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "raketenok@gmail.com": "raketenok@gmail.com"
+    "Ievgen Iefimenko": "raketenok@gmail.com"
   },
   "source": {
-    "git": "https://github.com/raketenok@gmail.com/CalendarSwift.git",
+    "git": "https://github.com/raketenok/CalendarSwift.git",
     "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "9.3"
   },
-  "source_files": "CalendarSwift/Classes/**/*"
+  "source_files": "CalendarSwift/Classes/**/*",
+  "swift_version": "4.0"
 }
