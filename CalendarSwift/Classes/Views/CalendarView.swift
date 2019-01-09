@@ -92,7 +92,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
     }
     
-    @objc private func rotated() {
+    @objc public func rotated() {
         DispatchQueue.main.async { [weak self] in
             self?.myCollectionView.reloadData()
         }
