@@ -85,10 +85,22 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     //MARK:- life cycle
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
+    }
+    
+    @objc private func rotated() {
+        DispatchQueue.main.async { [weak self] in
+            self?.myCollectionView.reloadData()
+        }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
     }
     
     public func setupCalendar() {
@@ -196,7 +208,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/7 - 8
+        let width = collectionView.frame.width/7 
         let height: CGFloat = 44
         return CGSize(width: width, height: height)
     }
@@ -206,7 +218,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 8.0
+        return 0
     }
     
     private func getFirstWeekDay() -> Int {
@@ -264,8 +276,8 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         weekdaysView.setupViews(isSundayFirst: self.isSundayFirst, df: self.df)
         self.addSubview(weekdaysView)
         weekdaysView.topAnchor.constraint(equalTo: monthView.bottomAnchor, constant: 10).isActive = true
-        weekdaysView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive = true
-        weekdaysView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
+        weekdaysView.leftAnchor.constraint(equalTo: leftAnchor, constant: 5).isActive = true
+        weekdaysView.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
         weekdaysView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         
         self.addSubview(self.myCollectionView)
@@ -358,6 +370,7 @@ extension CalendarView: ScrollSegmentDelegate {
             }
         }
     }
+
 }
 
 extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
