@@ -17,9 +17,13 @@ Pod::Spec.new do |s|
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Ievgen Iefimenko' => 'raketenok@gmail.com' }
   s.source           = { :git => 'https://github.com/raketenok/CalendarSwift.git', :tag => s.version }
-  s.ios.deployment_target = '9.3'
-  s.source_files = 'CalendarSwift/Classes/**/*'
+  s.ios.deployment_target = '10.0'
+  s.source_files = 'CalendarSwift/**/*'
   s.swift_version = '4.0'
+  s.resource_bundles = {
+      'CalendarSwift' => ['CalendarSwift/Assets/**/*.{imageset}']
+  }
+  
 end
 
 #git describe --abbrev=0 --tags

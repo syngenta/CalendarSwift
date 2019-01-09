@@ -16,8 +16,13 @@
     "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "9.3"
+    "ios": "10.0"
   },
-  "source_files": "CalendarSwift/Classes/**/*",
-  "swift_version": "4.0"
+  "source_files": "CalendarSwift/**/*",
+  "swift_version": "4.0",
+  "resource_bundles": {
+    "CalendarSwift": [
+      "CalendarSwift/Assets/**/*.{imageset}"
+    ]
+  }
 }

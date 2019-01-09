@@ -8,38 +8,36 @@
 import UIKit
 
 public struct Style {
-    var monthViewBackgroundColor = UIColor.white
-    var monthViewBtnRightColor = UIColor.black
-    var monthViewBtnLeftColor = UIColor.black
-    var monthViewTitleColor = UIColor.black
+   public var monthViewBackgroundColor = UIColor.white
+   public var monthViewBtnRightColor = UIColor.black
+   public var monthViewBtnLeftColor = UIColor.black
+   public var monthViewTitleColor = UIColor.black
+   public var bgColor = UIColor.white
+   public var activeCellLblColor = UIColor.black
+   public var activeCellLblColorHighlighted = UIColor.white
+   public var notActiveCellLblColor = UIColor.white
+   public var indicatorCellColor = UIColor(red: 23/255, green: 174/255, blue: 123/255, alpha: 1.0)
+   public var weekdaysLblColor = UIColor(red: 142/255, green: 142/255, blue: 147/255, alpha: 1.0)
+   public var weekdaysBackgroundColor = UIColor.white
     
-    var bgColor = UIColor.white
-    var activeCellLblColor = UIColor.black
-    var activeCellLblColorHighlighted = UIColor.white
-    var notActiveCellLblColor = UIColor.white
-    var indicatorCellColor = UIColor.lightGray
+   public var yearBackgroundColor = UIColor.white
+   public var yearSelectedColor = UIColor.black
+   public var yearDeselectedColor = UIColor.black
     
-    var weekdaysLblColor = UIColor.black
-    var weekdaysBackgroundColor = UIColor.white
+   public var switcherBackgroundColor = UIColor.white
+   public var switcherIndicatorColor = UIColor(red: 23/255, green: 174/255, blue: 123/255, alpha: 1.0)
+   public var switcherNormalTitleColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1.0)
+   public var switcherSelectedTitleColor = UIColor.white
+   public var switcherIndicatorWidth: CGFloat = 150
     
-    var yearBackgroundColor = UIColor.white
-    var yearSelectedColor = UIColor.black
-    var yearDeselectedColor = UIColor.black
+   public  var monthTitleFont = UIFont.systemFont(ofSize: 14, weight: .medium)
+   public var weekDaysFont = UIFont.systemFont(ofSize: 12, weight: .medium)
+   public var monthDaysFont = UIFont.systemFont(ofSize: 12, weight: .regular)
+   public var yearSelectedFont = UIFont.systemFont(ofSize: 26, weight: .medium)
+   public var yearUnselectedFont = UIFont.systemFont(ofSize: 20)
+   public var switcherTitleFont = UIFont.systemFont(ofSize: 12, weight: .regular)
     
-    var switcherBackgroundColor = UIColor.white
-    var switcherIndicatorColor = UIColor(white: 0.95, alpha: 1)
-    var switcherNormalTitleColor = UIColor.lightGray
-    var switcherSelectedTitleColor = UIColor.darkGray
-    var switcherIndicatorWidth: CGFloat = 150
-    
-    var monthTitleFont = UIFont.systemFont(ofSize: 14, weight: .medium)
-    var weekDaysFont = UIFont.systemFont(ofSize: 12, weight: .medium)
-    var monthDaysFont = UIFont.systemFont(ofSize: 12, weight: .regular)
-    var yearSelectedFont = UIFont.systemFont(ofSize: 26, weight: .medium)
-    var yearUnselectedFont = UIFont.systemFont(ofSize: 20)
-    var switcherTitleFont = UIFont.systemFont(ofSize: 12, weight: .regular)
-    
-    var language = "en"
+   public var language = "en"
 }
 
 public protocol CalendarViewDelegate: class {
@@ -93,7 +91,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         super.init(frame: frame)
     }
     
-   public func setupCalendar() {
+    public func setupCalendar() {
         self.setUpSettings()
         self.selectDate(date: self.selectedDate)
         self.setupViews()
@@ -138,12 +136,6 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         for i in self.minYear...self.maxYear {
             self.yearsArray.append("\(i)")
         }
-        
-        if Bundle.main.path(forResource: self.style.language, ofType: "lproj") != nil {
-            Bundle.setLanguage(self.style.language)
-        } else {
-            Bundle.setLanguage("en")
-        }
     }
     
     private func initializeView() {
@@ -174,7 +166,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         }
     }
     
-   public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.selectedIndexPath = indexPath
         guard let cell = collectionView.cellForItem(at: indexPath) as? DayCell else {
             return
@@ -191,7 +183,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         collectionView.reloadData()
     }
     
-   public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
         guard let cell = collectionView.cellForItem(at: indexPath) as? DayCell else {
             return
@@ -203,17 +195,17 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         
     }
     
-   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width/7 - 8
         let height: CGFloat = 44
         return CGSize(width: width, height: height)
     }
     
-   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 8.0
     }
     
-   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8.0
     }
     
@@ -229,6 +221,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     private func setupViews() {
         
         self.segmenView = ScrollSegmentView()
+        self.segmenView?.language = "\(self.style.language.prefix(2))"
         guard let segmenView = self.segmenView else {
             return
         }
@@ -242,7 +235,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         segmenView.translatesAutoresizingMaskIntoConstraints = false
         segmenView.setupViews()
         self.addSubview(segmenView)
-        segmenView.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
+        segmenView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor, constant: 20).isActive = true
         segmenView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         segmenView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         segmenView.heightAnchor.constraint(equalToConstant: 35).isActive = true
@@ -307,7 +300,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
 
 extension CalendarView: MonthViewDelegate {
     
-    func didChangeMonth(monthIndex: Int, year: Int) {
+    public func didChangeMonth(monthIndex: Int, year: Int) {
         self.currentMonthIndex = monthIndex + 1
         self.currentYear = year
         
@@ -334,14 +327,24 @@ extension CalendarView: ScrollSegmentDelegate {
     func segmentSelected(index: Int) {
         if index == 0 {
             self.selectDate(date: self.selectedDate)
-            self.pickerView.removeFromSuperview()
+     
+            UIView.animate(withDuration: 0.2, animations: {
+                self.pickerView.alpha = 0.0
+            }) { (finished) in
+                self.pickerView.removeFromSuperview()
+            }
         } else {
             
             guard let segmenView = self.segmenView else {
                 return
             }
+            self.pickerView.alpha = 0.0
             self.pickerView.backgroundColor = self.style.yearBackgroundColor
+          
             self.addSubview(self.pickerView)
+            UIView.animate(withDuration: 0.2) {
+                self.pickerView.alpha = 1.0
+            }
             self.pickerView.topAnchor.constraint(equalTo: segmenView.bottomAnchor, constant: 0).isActive = true
             self.pickerView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
             self.pickerView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
@@ -355,10 +358,6 @@ extension CalendarView: ScrollSegmentDelegate {
             }
         }
     }
-    
-    func scrollSegmentsLoaded() {
-        
-    }
 }
 
 extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
@@ -371,7 +370,7 @@ extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
         return self.yearsArray.count
     }
     
-    private func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
         let pickerLabel = UILabel()
         guard self.yearsArray.count > row else {
@@ -390,7 +389,7 @@ extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     
-    private func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         let calendar = Calendar.current
         let dateComponents: DateComponents? = calendar.dateComponents([.year, .month, .day], from: self.selectedDate)
@@ -408,5 +407,3 @@ extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
         pickerView.reloadAllComponents()
     }
 }
-
-

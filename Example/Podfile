@@ -1,7 +1,8 @@
 use_frameworks!
 
 target 'CalendarSwift_Example' do
-   pod 'CalendarSwift', :path => '../'
+
+  pod 'CalendarSwift', :path => '../'
   
   target 'CalendarSwift_Tests' do
     inherit! :search_paths

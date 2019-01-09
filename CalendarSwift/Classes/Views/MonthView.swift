@@ -1,25 +1,28 @@
 //
-//  MonthView.swift
-//  myCalender2
+//  CalendarView.swift
+//  CalendarSwift
 //
-//  Created by Muskan on 10/22/17.
-//  Copyright © 2017 akhil. All rights reserved.
+//  Created by Ievgen Iefimenko on 1/4/19.
 //
 
 import UIKit
 
-protocol MonthViewDelegate: class {
+public protocol MonthViewDelegate: class {
     func didChangeMonth(monthIndex: Int, year: Int)
 }
 
-class MonthView: UIView {
+public class MonthView: UIView {
     var monthsArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     var currentMonthIndex = 0
     var currentYear: Int = 0
     var delegate: MonthViewDelegate?
     var style = Style()
     
+    
     func updateMonthView(selectedDate: Date, df: DateFormatter? = nil) {
+        
+        let imageRight = self.drawImage(name: "chevronRight.png")
+        let imageLeft =  self.drawImage(name: "chevronLeft.png")
         
         self.currentMonthIndex = Calendar.current.component(.month, from: selectedDate) - 1
         self.currentYear = Calendar.current.component(.year, from: selectedDate)
@@ -32,8 +35,10 @@ class MonthView: UIView {
         lblName.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         lblName.widthAnchor.constraint(equalToConstant: 150).isActive = true
         lblName.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        lblName.text="\(monthsArr[currentMonthIndex]) \(currentYear)"
+        lblName.text="\(monthsArr[currentMonthIndex].capitalized) \(currentYear)"
         
+        self.btnRight.setImage(imageRight, for: .normal)
+        self.btnRight.setBackgroundImage(nil, for: .selected)
         self.btnRight.setTitleColor(self.style.monthViewBtnRightColor, for: .normal)
         self.addSubview(btnRight)
         btnRight.topAnchor.constraint(equalTo: topAnchor).isActive=true
@@ -41,6 +46,7 @@ class MonthView: UIView {
         btnRight.widthAnchor.constraint(equalToConstant: 50).isActive=true
         btnRight.heightAnchor.constraint(equalTo: heightAnchor).isActive=true
         
+        self.btnLeft.setImage(imageLeft, for: .normal)
         self.btnLeft.setTitleColor(self.style.monthViewBtnLeftColor, for: .normal)
         self.addSubview(btnLeft)
         btnLeft.topAnchor.constraint(equalTo: topAnchor).isActive=true
@@ -52,6 +58,7 @@ class MonthView: UIView {
             return
         }
         self.monthsArr = df.monthSymbols
+        lblName.text="\(monthsArr[currentMonthIndex].capitalized) \(currentYear)"
     }
     
     override init(frame: CGRect) {
@@ -77,6 +84,14 @@ class MonthView: UIView {
         delegate?.didChangeMonth(monthIndex: currentMonthIndex, year: currentYear)
     }
     
+    class func loadImage(name: String) -> UIImage? {
+        let podBundle = Bundle(for: self)
+        if let url = podBundle.url(forResource: "CalendarSwift", withExtension: "bundle") {
+            let bundle = Bundle(url: url)
+            return UIImage(named: name, in: bundle, compatibleWith: nil)
+        }
+        return nil
+    }
     
     let lblName: UILabel = {
         let lbl = UILabel()
@@ -89,7 +104,6 @@ class MonthView: UIView {
     
     let btnRight: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "chevronRight"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(btnLeftRightAction(sender:)), for: .touchUpInside)
         btn.tintColor = .lightGray
@@ -99,7 +113,6 @@ class MonthView: UIView {
     
     let btnLeft: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "chevronLeft"), for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(btnLeftRightAction(sender:)), for: .touchUpInside)
         btn.tintColor = .lightGray
@@ -110,5 +123,11 @@ class MonthView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func drawImage(name: String) -> UIImage {
+        let podBundle = Bundle(for: self.classForCoder).bundlePath
+        let pathUrl = URL(fileURLWithPath: podBundle).appendingPathComponent(name).path
+        let im = UIImage(contentsOfFile: pathUrl)
+        return im!
+    }
 }
-

@@ -8,8 +8,7 @@
 import UIKit
 
 
-//get first day of the month
-extension Date {
+public extension Date {
     var weekday: Int {
         
         let calendar = Calendar.current
@@ -34,7 +33,7 @@ extension Date {
 }
 
 //get date from string
-extension String {
+public extension String {
     
     var date: Date {
         let formatter = DateFormatter()
@@ -42,3 +41,6 @@ extension String {
         return formatter.date(from: self)!
     }
 }
+
+
+

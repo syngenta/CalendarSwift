@@ -20,20 +20,27 @@ struct ScrollSegmentStyle {
 
 protocol ScrollSegmentDelegate: class {
     func segmentSelected(index: Int)
-    func scrollSegmentsLoaded()
 }
 
 class ScrollSegmentView: UIControl {
-
+    
+    public var language = "en"
     public weak var delegate: ScrollSegmentDelegate?
-  
+    
+    private let localization = ["en": ["Date", "Year"],
+                                "de": ["Datum", "Jahr"],
+                                "pt": ["Namorar", "Ano"],
+                                "fr": ["Date", "Année"],
+                                "it": ["Data", "Ano"],
+                                "uk": ["Дата", "Рік"],
+                                "es": ["Fecha", "Año"]]
+    
+    
     public var style = {
         return ScrollSegmentStyle()
     }()
     
-    public var titles = {
-        return [NSLocalizedString("date", comment: ""), NSLocalizedString("year", comment: "")]
-    }()
+    public var titles = [String]()
     
     private var titleLabels: [UILabel] = []
     private var constraintIndWidth = NSLayoutConstraint()
@@ -83,6 +90,9 @@ class ScrollSegmentView: UIControl {
     }
     
     func setupViews() {
+        
+        let localeDict = self.localization[self.language] ?? self.localization["en"]
+        self.titles = [localeDict!.first!, localeDict!.last!]
         let segmentsStack = UIStackView()
         segmentsStack.translatesAutoresizingMaskIntoConstraints = false
         segmentsStack.translatesAutoresizingMaskIntoConstraints = false
@@ -141,7 +151,7 @@ class ScrollSegmentView: UIControl {
                                                      attribute: .notAnAttribute,
                                                      multiplier: 1,
                                                      constant: coverW)
-
+        
         self.constraintIndLeft = NSLayoutConstraint(item: self.indicator,
                                                     attribute: .leading,
                                                     relatedBy: .equal,
@@ -165,7 +175,6 @@ class ScrollSegmentView: UIControl {
         segmentsStack.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         DispatchQueue.main.async {
             self.setSelectIndex(index: 0, animated: false)
-            self.delegate?.scrollSegmentsLoaded()
         }
     }
     

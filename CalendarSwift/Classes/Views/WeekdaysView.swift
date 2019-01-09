@@ -1,11 +1,9 @@
 //
-//  WeekdaysView.swift
-//  myCalender2
+//  CalendarView.swift
+//  CalendarSwift
 //
-//  Created by Muskan on 10/22/17.
-//  Copyright © 2017 akhil. All rights reserved.
+//  Created by Ievgen Iefimenko on 1/4/19.
 //
-
 import UIKit
 
 class WeekdaysView: UIView {
@@ -24,7 +22,7 @@ class WeekdaysView: UIView {
         myStackView.leftAnchor.constraint(equalTo: leftAnchor).isActive=true
         myStackView.rightAnchor.constraint(equalTo: rightAnchor).isActive=true
         myStackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive=true
-
+        
         let weekdays = df.veryShortWeekdaySymbols
         var formattedWeekdays = weekdays
         
@@ -33,7 +31,7 @@ class WeekdaysView: UIView {
             formattedWeekdays!.remove(at: 0)
             formattedWeekdays!.append(sunday!)
         }
-            
+        
         for i in 0..<7 {
             let lbl = UILabel()
             lbl.text = formattedWeekdays![i]
