@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CalendarSwift'
-  s.version          = '0.1.0'
+  s.version          = `git describe --abbrev=0 --tags`
   s.summary          = 'Custom calendar'
   s.description      = <<-DESC
   'Custom calendar for iOS.'
