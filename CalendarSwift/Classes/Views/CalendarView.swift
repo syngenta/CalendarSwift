@@ -8,36 +8,36 @@
 import UIKit
 
 public struct Style {
-   public var monthViewBackgroundColor = UIColor.white
-   public var monthViewBtnRightColor = UIColor.black
-   public var monthViewBtnLeftColor = UIColor.black
-   public var monthViewTitleColor = UIColor.black
-   public var bgColor = UIColor.white
-   public var activeCellLblColor = UIColor.black
-   public var activeCellLblColorHighlighted = UIColor.white
-   public var notActiveCellLblColor = UIColor.white
-   public var indicatorCellColor = UIColor(red: 23/255, green: 174/255, blue: 123/255, alpha: 1.0)
-   public var weekdaysLblColor = UIColor(red: 142/255, green: 142/255, blue: 147/255, alpha: 1.0)
-   public var weekdaysBackgroundColor = UIColor.white
+    public var monthViewBackgroundColor = UIColor.white
+    public var monthViewBtnRightColor = UIColor.black
+    public var monthViewBtnLeftColor = UIColor.black
+    public var monthViewTitleColor = UIColor.black
+    public var bgColor = UIColor.white
+    public var activeCellLblColor = UIColor.black
+    public var activeCellLblColorHighlighted = UIColor.white
+    public var notActiveCellLblColor = UIColor.white
+    public var indicatorCellColor = UIColor(red: 23/255, green: 174/255, blue: 123/255, alpha: 1.0)
+    public var weekdaysLblColor = UIColor(red: 142/255, green: 142/255, blue: 147/255, alpha: 1.0)
+    public var weekdaysBackgroundColor = UIColor.white
     
-   public var yearBackgroundColor = UIColor.white
-   public var yearSelectedColor = UIColor.black
-   public var yearDeselectedColor = UIColor.black
+    public var yearBackgroundColor = UIColor.white
+    public var yearSelectedColor = UIColor.black
+    public var yearDeselectedColor = UIColor.black
     
-   public var switcherBackgroundColor = UIColor.white
-   public var switcherIndicatorColor = UIColor(red: 23/255, green: 174/255, blue: 123/255, alpha: 1.0)
-   public var switcherNormalTitleColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1.0)
-   public var switcherSelectedTitleColor = UIColor.white
-   public var switcherIndicatorWidth: CGFloat = 150
+    public var switcherBackgroundColor = UIColor.white
+    public var switcherIndicatorColor = UIColor(red: 23/255, green: 174/255, blue: 123/255, alpha: 1.0)
+    public var switcherNormalTitleColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1.0)
+    public var switcherSelectedTitleColor = UIColor.white
+    public var switcherIndicatorWidth: CGFloat = 150
     
-   public  var monthTitleFont = UIFont.systemFont(ofSize: 14, weight: .medium)
-   public var weekDaysFont = UIFont.systemFont(ofSize: 12, weight: .medium)
-   public var monthDaysFont = UIFont.systemFont(ofSize: 12, weight: .regular)
-   public var yearSelectedFont = UIFont.systemFont(ofSize: 26, weight: .medium)
-   public var yearUnselectedFont = UIFont.systemFont(ofSize: 20)
-   public var switcherTitleFont = UIFont.systemFont(ofSize: 12, weight: .regular)
+    public  var monthTitleFont = UIFont.systemFont(ofSize: 14, weight: .medium)
+    public var weekDaysFont = UIFont.systemFont(ofSize: 12, weight: .medium)
+    public var monthDaysFont = UIFont.systemFont(ofSize: 12, weight: .regular)
+    public var yearSelectedFont = UIFont.systemFont(ofSize: 26, weight: .medium)
+    public var yearUnselectedFont = UIFont.systemFont(ofSize: 20)
+    public var switcherTitleFont = UIFont.systemFont(ofSize: 12, weight: .regular)
     
-   public var language = "en"
+    public var language = "en"
 }
 
 public protocol CalendarViewDelegate: class {
@@ -110,6 +110,9 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard self.numOfDaysInMonth.count > self.currentMonthIndex-1 else {
+            return 0
+        }
         return self.numOfDaysInMonth[self.currentMonthIndex-1] + self.firstWeekDayOfMonth - 1
     }
     
@@ -208,7 +211,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/7 
+        let width = collectionView.frame.width/7
         let height: CGFloat = 44
         return CGSize(width: width, height: height)
     }
@@ -339,7 +342,7 @@ extension CalendarView: ScrollSegmentDelegate {
     func segmentSelected(index: Int) {
         if index == 0 {
             self.selectDate(date: self.selectedDate)
-     
+            
             UIView.animate(withDuration: 0.2, animations: {
                 self.pickerView.alpha = 0.0
             }) { (finished) in
@@ -352,7 +355,7 @@ extension CalendarView: ScrollSegmentDelegate {
             }
             self.pickerView.alpha = 0.0
             self.pickerView.backgroundColor = self.style.yearBackgroundColor
-          
+            
             self.addSubview(self.pickerView)
             UIView.animate(withDuration: 0.2) {
                 self.pickerView.alpha = 1.0
@@ -370,7 +373,7 @@ extension CalendarView: ScrollSegmentDelegate {
             }
         }
     }
-
+    
 }
 
 extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {

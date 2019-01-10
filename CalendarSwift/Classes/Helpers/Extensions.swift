@@ -37,7 +37,7 @@ public extension String {
     
     var date: Date {
         let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY-MM-DD"
+        formatter.dateFormat = "yyyy-MM-dd"
         return formatter.date(from: self)!
     }
 }
