@@ -69,6 +69,9 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     private var selectedIndexPath = IndexPath()
     private var isSundayFirst = true
     private var df = DateFormatter()
+    private var timer = Timer()
+    private var needCallDelegate = false
+    
     
     let myCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -83,8 +86,13 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     }()
     
     //MARK:- life cycle
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
+    }
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
         NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
     }
     
@@ -96,11 +104,6 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         DispatchQueue.main.async { [weak self] in
             self?.myCollectionView.reloadData()
         }
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
     }
     
     public func setupCalendar() {
@@ -194,7 +197,10 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         self.presentYear = self.currentYear
         self.selectedDate = newDate
         self.selectedIndexPath = indexPath
-        self.delegate?.calendarDateChanged(date: newDate)
+        if self.needCallDelegate {
+            self.delegate?.calendarDateChanged(date: newDate)
+        }
+        self.needCallDelegate = true
         collectionView.reloadData()
     }
     
@@ -226,8 +232,8 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     
     private func getFirstWeekDay() -> Int {
         let firstMonthDate = "\(self.currentYear)-\(self.currentMonthIndex)-01".self.date.firstDayOfTheMonth
-        let dayFormatted = firstMonthDate.weekday
-        let dayStandart = firstMonthDate.weekdayStandart
+        let dayFormatted = self.df.calendar.weekDay(date: firstMonthDate)
+        let dayStandart = self.df.calendar.weekdayStandart(date: firstMonthDate)
         self.isSundayFirst = dayFormatted == dayStandart
         
         return dayFormatted
@@ -250,7 +256,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         segmenView.translatesAutoresizingMaskIntoConstraints = false
         segmenView.setupViews()
         self.addSubview(segmenView)
-        segmenView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor, constant: 20).isActive = true
+        segmenView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor, constant: 15).isActive = true
         segmenView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         segmenView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         segmenView.heightAnchor.constraint(equalToConstant: 35).isActive = true
@@ -263,9 +269,9 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         monthView.style = self.style
         monthView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(monthView)
-        monthView.topAnchor.constraint(equalTo: segmenView.bottomAnchor, constant: 10).isActive = true
-        monthView.leftAnchor.constraint(equalTo: self.layoutMarginsGuide.leftAnchor, constant: 21).isActive = true
-        monthView.rightAnchor.constraint(equalTo: self.layoutMarginsGuide.rightAnchor, constant: -21).isActive = true
+        monthView.topAnchor.constraint(equalTo: segmenView.bottomAnchor, constant: 8).isActive = true
+        monthView.leftAnchor.constraint(equalTo: leftAnchor, constant: 5).isActive = true
+        monthView.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
         monthView.heightAnchor.constraint(equalToConstant: 35).isActive = true
         monthView.delegate = self
         monthView.updateMonthView(selectedDate: self.selectedDate, df: self.df)
@@ -278,13 +284,13 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         weekdaysView.translatesAutoresizingMaskIntoConstraints = false
         weekdaysView.setupViews(isSundayFirst: self.isSundayFirst, df: self.df)
         self.addSubview(weekdaysView)
-        weekdaysView.topAnchor.constraint(equalTo: monthView.bottomAnchor, constant: 10).isActive = true
+        weekdaysView.topAnchor.constraint(equalTo: monthView.bottomAnchor, constant: 8).isActive = true
         weekdaysView.leftAnchor.constraint(equalTo: leftAnchor, constant: 5).isActive = true
         weekdaysView.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
         weekdaysView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         
         self.addSubview(self.myCollectionView)
-        self.myCollectionView.topAnchor.constraint(equalTo: weekdaysView.bottomAnchor, constant: 20).isActive = true
+        self.myCollectionView.topAnchor.constraint(equalTo: weekdaysView.bottomAnchor, constant: 15).isActive = true
         self.myCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 5).isActive = true
         self.myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
         self.myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -318,7 +324,7 @@ extension CalendarView: MonthViewDelegate {
     public func didChangeMonth(monthIndex: Int, year: Int) {
         self.currentMonthIndex = monthIndex + 1
         self.currentYear = year
-        
+        self.needCallDelegate = false
         //for leap year, make february month of 29 days
         if monthIndex == 1 {
             if self.currentYear % 4 == 0 {
@@ -340,9 +346,12 @@ extension CalendarView: MonthViewDelegate {
 extension CalendarView: ScrollSegmentDelegate {
     
     func segmentSelected(index: Int) {
+        self.timer.invalidate()
         if index == 0 {
-            self.selectDate(date: self.selectedDate)
-            
+            if self.currentYear != self.presentYear {
+                self.needCallDelegate = false
+                self.selectDate(date: self.selectedDate)
+            }
             UIView.animate(withDuration: 0.2, animations: {
                 self.pickerView.alpha = 0.0
             }) { (finished) in
@@ -373,7 +382,6 @@ extension CalendarView: ScrollSegmentDelegate {
             }
         }
     }
-    
 }
 
 extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
@@ -404,9 +412,9 @@ extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
         return pickerLabel
     }
     
-    
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
+        self.timer.invalidate()
+        var counter = 0
         let calendar = Calendar.current
         let dateComponents: DateComponents? = calendar.dateComponents([.year, .month, .day], from: self.selectedDate)
         
@@ -414,12 +422,19 @@ extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
             return
         }
         dc.year = year
-        guard let newDate: Date = calendar.date(from: dc)  else {
+        guard let newDate: Date = calendar.date(from: dc), self.presentYear != year else {
             return
         }
-        self.selectedDate = newDate
-        self.presentYear = year
-        self.delegate?.calendarDateChanged(date: newDate)
-        pickerView.reloadAllComponents()
+        
+        self.timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { [weak self] (timer) in
+            counter += 1
+            if counter > 1 {
+                self?.selectedDate = newDate
+                self?.presentYear = year
+                self?.delegate?.calendarDateChanged(date: newDate)
+                pickerView.reloadAllComponents()
+                self?.timer.invalidate()
+            }
+        }
     }
 }

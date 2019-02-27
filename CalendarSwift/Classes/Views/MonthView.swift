@@ -43,7 +43,7 @@ public class MonthView: UIView {
         self.addSubview(btnRight)
         btnRight.topAnchor.constraint(equalTo: topAnchor).isActive=true
         btnRight.rightAnchor.constraint(equalTo: rightAnchor).isActive=true
-        btnRight.widthAnchor.constraint(equalToConstant: 50).isActive=true
+        btnRight.widthAnchor.constraint(equalToConstant: 70).isActive=true
         btnRight.heightAnchor.constraint(equalTo: heightAnchor).isActive=true
         
         self.btnLeft.setImage(imageLeft, for: .normal)
@@ -51,7 +51,7 @@ public class MonthView: UIView {
         self.addSubview(btnLeft)
         btnLeft.topAnchor.constraint(equalTo: topAnchor).isActive=true
         btnLeft.leftAnchor.constraint(equalTo: leftAnchor).isActive=true
-        btnLeft.widthAnchor.constraint(equalToConstant: 50).isActive=true
+        btnLeft.widthAnchor.constraint(equalToConstant: 70).isActive=true
         btnLeft.heightAnchor.constraint(equalTo: heightAnchor).isActive=true
         
         guard let df = df else {
@@ -107,7 +107,9 @@ public class MonthView: UIView {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(btnLeftRightAction(sender:)), for: .touchUpInside)
         btn.tintColor = .lightGray
-        btn.contentHorizontalAlignment = .right
+        btn.imageEdgeInsets.right = -23
+
+        btn.contentHorizontalAlignment = .center
         return btn
     }()
     
@@ -116,7 +118,8 @@ public class MonthView: UIView {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(btnLeftRightAction(sender:)), for: .touchUpInside)
         btn.tintColor = .lightGray
-        btn.contentHorizontalAlignment = .left
+        btn.imageEdgeInsets.left = -23
+        btn.contentHorizontalAlignment = .center
         return btn
     }()
     
