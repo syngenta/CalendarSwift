@@ -133,9 +133,19 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
         let calcDate = indexPath.row - self.firstWeekDayOfMonth + 2
         cell.isHidden = false
         cell.lbl.text = "\(calcDate)"
+
         let needSelect = self.selectedIndexPath == indexPath && self.currentMonthIndex == self.presentMonthIndex && self.presentYear == self.currentYear
         cell.lbl.textColor = needSelect ? self.style.activeCellLblColorHighlighted : self.style.activeCellLblColor
         cell.selectedIndicator.backgroundColor = needSelect ? self.style.indicatorCellColor : .clear
+        
+        
+        let today = Date()
+        if self.currentYear == today.year && self.currentMonthIndex == today.month {
+            let cellFullDate = "\(self.currentYear)-\(self.currentMonthIndex)-\(calcDate)".date
+            if DateFormatter().calendar.compare(cellFullDate, to: today, toGranularity: .day) == .orderedSame {
+                cell.lbl.textColor = .lightGray
+            }
+        }
         
         return cell
     }

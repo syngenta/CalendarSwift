@@ -9,20 +9,7 @@ import UIKit
 
 
 public extension Date {
-//    var weekday: Int {
-//
-//        let calendar = Calendar.current
-//        var dayOfWeek = calendar.component(.weekday, from: self) + 1 - calendar.firstWeekday
-//        if dayOfWeek <= 0 {
-//            dayOfWeek += 7
-//        }
-//        return dayOfWeek
-//    }
-//
-//    var weekdayStandart: Int {
-//        return Calendar.current.component(.weekday, from: self)
-//    }
-    
+
     var firstDayOfTheMonth: Date {
         return Calendar.current.date(from: Calendar.current.dateComponents([.year,.month], from: self))!
     }
@@ -30,6 +17,11 @@ public extension Date {
     var year: Int {
         return Calendar.current.component(.year, from: self)
     }
+    
+    var month: Int {
+        return Calendar.current.component(.month, from: self)
+    }
+    
 }
 
 public extension Calendar {
