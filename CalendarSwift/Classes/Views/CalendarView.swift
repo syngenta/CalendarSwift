@@ -332,7 +332,6 @@ extension CalendarView: MonthViewDelegate {
     public func didChangeMonth(monthIndex: Int, year: Int) {
         self.currentMonthIndex = monthIndex + 1
         self.currentYear = year
-        self.needCallDelegate = false
         //for leap year, make february month of 29 days
         if monthIndex == 1 {
             if self.currentYear % 4 == 0 {
@@ -346,6 +345,7 @@ extension CalendarView: MonthViewDelegate {
         self.myCollectionView.reloadData()
         self.validateMinMaxDate()
         if self.presentMonthIndex == self.currentMonthIndex, self.currentYear == self.presentYear {
+            self.needCallDelegate = false
             self.selectDate(date: self.selectedDate)
         }
     }
