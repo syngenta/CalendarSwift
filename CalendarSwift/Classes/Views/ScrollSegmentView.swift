@@ -33,7 +33,8 @@ class ScrollSegmentView: UIControl {
                                 "fr": ["Date", "Année"],
                                 "it": ["Data", "Ano"],
                                 "uk": ["Дата", "Рік"],
-                                "es": ["Fecha", "Año"]]
+                                "es": ["Fecha", "Año"],
+                                "ru": ["Дата", "Год"]]
     
     
     public var style = {
