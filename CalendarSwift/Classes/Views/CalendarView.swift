@@ -52,6 +52,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     public var maxYear = Date().year + 100
     public var style = Style()
     public var selectedDate = Date()
+    public var selectedYearDelay: Double = 0.0
     public weak var delegate: CalendarViewDelegate?
     
     private var numOfDaysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
@@ -434,7 +435,7 @@ extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
             return
         }
         
-        self.timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { [weak self] (timer) in
+        self.timer = Timer.scheduledTimer(withTimeInterval: self.selectedYearDelay, repeats: true) { [weak self] (timer) in
             counter += 1
             if counter > 1 {
                 self?.selectedDate = newDate

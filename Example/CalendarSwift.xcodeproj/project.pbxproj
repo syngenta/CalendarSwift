@@ -231,6 +231,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				de,
@@ -544,6 +545,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6A17CC4EFD463E4792E6A192 /* Pods-CalendarSwift_Tests.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -566,6 +568,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A4DA7FC8B1CFB8D98857C452 /* Pods-CalendarSwift_Tests.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

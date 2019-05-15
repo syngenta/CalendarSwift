@@ -1,6 +1,6 @@
 {
   "name": "CalendarSwift",
-  "version": "0.1.0",
+  "version": "0.1.8",
   "summary": "Custom calendar",
   "description": "'Custom calendar for iOS.'",
   "homepage": "https://github.com/raketenok/CalendarSwift",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/raketenok/CalendarSwift.git",
-    "tag": "0.1.0"
+    "tag": "0.1.8"
   },
   "platforms": {
     "ios": "10.0"

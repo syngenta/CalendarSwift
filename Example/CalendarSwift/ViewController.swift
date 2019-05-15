@@ -19,6 +19,7 @@ class ViewController: UIViewController, CalendarViewDelegate {
         self.calendar.style.language = "uk"
         self.calendar.delegate = self
         self.calendar.setupCalendar()
+        self.calendar.selectedYearDelay = 0.3
     }
 
     override func didReceiveMemoryWarning() {
