@@ -82,7 +82,10 @@ public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
         myCollectionView.frame.minY + (cellHeight * CGFloat(itemsCount / 7))
     }
     private var itemsCount: Int {
-        numOfDaysInMonth[currentMonthIndex-1] + firstWeekDayOfMonth - 1
+        guard numOfDaysInMonth.count > currentMonthIndex-1 else {
+            return 0
+        }
+        return numOfDaysInMonth[currentMonthIndex-1] + firstWeekDayOfMonth - 1
     }
     
     let myCollectionView: UICollectionView = {
@@ -112,6 +115,11 @@ public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
     }
     
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        self.delegate?.calendarContentHeightChanged(height: calendarHeight)
+    }
+    
     @objc public func rotated() {
         DispatchQueue.main.async { [weak self] in
             self?.myCollectionView.reloadData()
@@ -125,10 +133,7 @@ public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard self.numOfDaysInMonth.count > self.currentMonthIndex-1 else {
-            return 0
-        }
-        return self.numOfDaysInMonth[self.currentMonthIndex-1] + self.firstWeekDayOfMonth - 1
+        return itemsCount
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -238,7 +243,7 @@ public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width/7
-        return CGSize(width: width, height: 44)
+        return CGSize(width: width, height: cellHeight)
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
