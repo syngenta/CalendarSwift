@@ -30,5 +30,9 @@ class ViewController: UIViewController, CalendarViewDelegate {
     func calendarDateChanged(date: Date) {
         print(date)
     }
+    
+    func calendarContentHeightChanged(height: CGFloat) {
+        print("height - \(height)")
+    }
 
 }

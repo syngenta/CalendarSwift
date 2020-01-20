@@ -30,7 +30,7 @@ public struct Style {
     public var switcherSelectedTitleColor = UIColor.white
     public var switcherIndicatorWidth: CGFloat = 150
     
-    public  var monthTitleFont = UIFont.systemFont(ofSize: 14, weight: .medium)
+    public var monthTitleFont = UIFont.systemFont(ofSize: 14, weight: .medium)
     public var weekDaysFont = UIFont.systemFont(ofSize: 12, weight: .medium)
     public var monthDaysFont = UIFont.systemFont(ofSize: 12, weight: .regular)
     public var yearSelectedFont = UIFont.systemFont(ofSize: 26, weight: .medium)
@@ -43,10 +43,15 @@ public struct Style {
 public protocol CalendarViewDelegate: class {
     
     func calendarDateChanged(date: Date)
+    func calendarContentHeightChanged(height: CGFloat)
 }
 
+public extension CalendarViewDelegate {
+    
+    func calendarContentHeightChanged(height: CGFloat) {}
+}
 
-public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     public var minYear = 1970
     public var maxYear = Date().year + 100
@@ -72,7 +77,13 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     private var df = DateFormatter()
     private var timer = Timer()
     private var needCallDelegate = false
-    
+    private let cellHeight: CGFloat = 44
+    private var calendarHeight: CGFloat {
+        myCollectionView.frame.minY + (cellHeight * CGFloat(itemsCount / 7))
+    }
+    private var itemsCount: Int {
+        numOfDaysInMonth[currentMonthIndex-1] + firstWeekDayOfMonth - 1
+    }
     
     let myCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -227,8 +238,7 @@ public class CalendarView: UIView , UICollectionViewDelegate, UICollectionViewDa
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width/7
-        let height: CGFloat = 44
-        return CGSize(width: width, height: height)
+        return CGSize(width: width, height: 44)
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -344,6 +354,7 @@ extension CalendarView: MonthViewDelegate {
         //end
         self.firstWeekDayOfMonth = getFirstWeekDay()
         self.myCollectionView.reloadData()
+        self.delegate?.calendarContentHeightChanged(height: calendarHeight)
         self.validateMinMaxDate()
         if self.presentMonthIndex == self.currentMonthIndex, self.currentYear == self.presentYear {
             self.needCallDelegate = false
