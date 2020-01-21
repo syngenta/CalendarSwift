@@ -21,7 +21,11 @@ class ViewController: UIViewController, CalendarViewDelegate {
         self.calendar.setupCalendar()
         self.calendar.selectedYearDelay = 0.3
     }
-
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -32,6 +36,7 @@ class ViewController: UIViewController, CalendarViewDelegate {
     }
     
     func calendarContentHeightChanged(height: CGFloat) {
+        preferredContentSize = CGSize(width: 320, height: height)
         print("height - \(height)")
     }
 

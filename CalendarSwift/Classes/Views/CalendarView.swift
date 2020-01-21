@@ -48,6 +48,7 @@ public protocol CalendarViewDelegate: class {
 
 public extension CalendarViewDelegate {
     
+    func calendarDateChanged(date: Date) {}
     func calendarContentHeightChanged(height: CGFloat) {}
 }
 
@@ -78,8 +79,12 @@ public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
     private var timer = Timer()
     private var needCallDelegate = false
     private let cellHeight: CGFloat = 44
+    private let cellSpacing: CGFloat = 8.0
+    private let daysInWeek: CGFloat = 7.0
     private var calendarHeight: CGFloat {
-        myCollectionView.frame.minY + (cellHeight * CGFloat(itemsCount / 7))
+        let weeksCount = (CGFloat(itemsCount) / daysInWeek).rounded(.awayFromZero)
+        let collectionHeight = cellHeight * weeksCount + cellSpacing * weeksCount
+        return myCollectionView.frame.minY + collectionHeight
     }
     private var itemsCount: Int {
         guard numOfDaysInMonth.count > currentMonthIndex-1 else {
@@ -242,12 +247,12 @@ public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/7
+        let width = collectionView.frame.width / daysInWeek
         return CGSize(width: width, height: cellHeight)
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8.0
+        return cellSpacing
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

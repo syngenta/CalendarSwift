@@ -1,14 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="s6K-7y-jDy">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="6FW-QG-r6Y">
+            <objects>
+                <navigationController id="s6K-7y-jDy" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0sH-dV-Oxe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="njd-oZ-RyZ" kind="relationship" relationship="rootViewController" id="TMw-dp-b14"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="coV-xv-Hgd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1542" y="146"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="TBr-9F-Gvf">
+            <objects>
+                <viewController id="njd-oZ-RyZ" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xMX-o6-s7W"/>
+                        <viewControllerLayoutGuide type="bottom" id="eAX-A3-Gkm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TSo-yI-BIg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i7i-VA-YAP">
+                                <rect key="frame" x="137" y="64" width="101" height="30"/>
+                                <state key="normal" title="Show calendar"/>
+                                <connections>
+                                    <segue destination="vXZ-lx-hvc" kind="popoverPresentation" popoverAnchorView="i7i-VA-YAP" id="2wc-qQ-ZX8">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES"/>
+                                    </segue>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="i7i-VA-YAP" firstAttribute="top" secondItem="xMX-o6-s7W" secondAttribute="bottom" constant="20" id="2O8-Se-HY8"/>
+                            <constraint firstItem="i7i-VA-YAP" firstAttribute="centerX" secondItem="TSo-yI-BIg" secondAttribute="centerX" id="DTR-oR-gk0"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="BJx-dK-Z3t"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RBp-7U-gWR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-682" y="145"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
@@ -18,20 +66,20 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eqk-qb-qLY" customClass="CalendarView" customModule="CalendarSwift">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Eqk-qb-qLY" firstAttribute="height" secondItem="kh9-bI-dsS" secondAttribute="height" id="UIy-3r-txE"/>
-                            <constraint firstItem="Eqk-qb-qLY" firstAttribute="width" secondItem="kh9-bI-dsS" secondAttribute="width" id="oeh-j6-yZq"/>
-                            <constraint firstItem="Eqk-qb-qLY" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="uQP-Ig-JD5"/>
-                            <constraint firstItem="Eqk-qb-qLY" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="x9r-SK-XmQ"/>
+                            <constraint firstItem="Eqk-qb-qLY" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="Lke-0i-QYM"/>
+                            <constraint firstAttribute="trailing" secondItem="Eqk-qb-qLY" secondAttribute="trailing" id="cV0-sZ-89W"/>
+                            <constraint firstItem="Eqk-qb-qLY" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="gt4-hn-BrT"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Eqk-qb-qLY" secondAttribute="bottom" id="hbz-ih-ybe"/>
                         </constraints>
                     </view>
                     <connections>
@@ -40,6 +88,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="166" y="145"/>
         </scene>
     </scenes>
 </document>
