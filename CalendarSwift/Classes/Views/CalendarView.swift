@@ -436,8 +436,7 @@ extension CalendarView: UIPickerViewDelegate, UIPickerViewDataSource {
         } else {
             pickerLabel.attributedText = NSAttributedString(string: self.yearsArray[row], attributes: [NSAttributedStringKey.font: self.style.yearUnselectedFont, NSAttributedStringKey.foregroundColor: self.style.yearDeselectedColor])
         }
-        pickerView.subviews[1].isHidden = true
-        pickerView.subviews[2].isHidden = true
+        pickerView.subviews.forEach { if $0.subviews.count == 0 { $0.isHidden = true } }
         pickerLabel.textAlignment = .center
         return pickerLabel
     }
