@@ -40,4 +40,8 @@ class ViewController: UIViewController, CalendarViewDelegate {
         print("height - \(height)")
     }
 
+    func calendarError(error: CalendarError) {
+        fatalError(error.details)
+    }
+
 }

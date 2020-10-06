@@ -40,16 +40,22 @@ public struct Style {
     public var language = "en"
 }
 
+public struct CalendarError: Error {
+    public let details: String
+}
+
 public protocol CalendarViewDelegate: class {
     
     func calendarDateChanged(date: Date)
     func calendarContentHeightChanged(height: CGFloat)
+    func calendarError(error: CalendarError)
 }
 
 public extension CalendarViewDelegate {
     
     func calendarDateChanged(date: Date) {}
     func calendarContentHeightChanged(height: CGFloat) {}
+    func calendarError(error: CalendarError) {}
 }
 
 public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -162,9 +168,14 @@ public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
 
         let today = Date()
         if self.currentYear == today.year && self.currentMonthIndex == today.month {
-            let cellFullDate = "\(self.currentYear)-\(self.currentMonthIndex)-\(calcDate)".date
-            if DateFormatter().calendar.compare(cellFullDate, to: today, toGranularity: .day) == .orderedSame {
-                cell.lbl.textColor = needSelect ? self.style.activeCellLblColorHighlighted : self.style.indicatorCellColor
+            let cellFullDateString = "\(self.currentYear)-\(self.currentMonthIndex)-\(calcDate)"
+            if let cellFullDate = cellFullDateString.date {
+                if DateFormatter().calendar.compare(cellFullDate, to: today, toGranularity: .day) == .orderedSame {
+                    cell.lbl.textColor = needSelect ? self.style.activeCellLblColorHighlighted : self.style.indicatorCellColor
+                }
+            } else {
+                let error = CalendarError(details: "\(#function):\(#line), can't get Date from: \(cellFullDateString)")
+                delegate?.calendarError(error: error)
             }
         }
         return cell
@@ -222,7 +233,15 @@ public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
         cell.lbl.textColor = self.style.activeCellLblColorHighlighted
         cell.selectedIndicator.backgroundColor = self.style.indicatorCellColor
         let selectedDay = -(self.firstWeekDayOfMonth - indexPath.item - 1) + 1
-        let newDate = "\(self.currentYear)-\(self.currentMonthIndex)-\(selectedDay)".date
+
+        let newDateString = "\(self.currentYear)-\(self.currentMonthIndex)-\(selectedDay)"
+        guard let newDate = newDateString.date else {
+            let error = CalendarError(details: "\(#function):\(#line), can't get Date from: \(newDateString)")
+            delegate?.calendarError(error: error)
+            collectionView.reloadData()
+            return
+        }
+
         self.presentMonthIndex = self.currentMonthIndex
         self.presentYear = self.currentYear
         self.selectedDate = newDate
@@ -260,7 +279,14 @@ public class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
     }
     
     private func getFirstWeekDay() -> Int {
-        let firstMonthDate = "\(self.currentYear)-\(self.currentMonthIndex)-01".self.date.firstDayOfTheMonth
+
+        let firstMonthDateString = "\(self.currentYear)-\(self.currentMonthIndex)-01"
+        guard let firstMonthDate = firstMonthDateString.date?.firstDayOfTheMonth else {
+            let error = CalendarError(details: "\(#function):\(#line), can't get Date from: \(firstMonthDateString)")
+            delegate?.calendarError(error: error)
+            fatalError(error.details)
+        }
+
         let dayFormatted = self.df.calendar.weekDay(date: firstMonthDate)
         let dayStandart = self.df.calendar.weekdayStandart(date: firstMonthDate)
         self.isSundayFirst = dayFormatted == dayStandart

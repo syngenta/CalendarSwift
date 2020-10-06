@@ -1,5 +1,5 @@
 PODS:
-  - CalendarSwift (0.1.11)
+  - CalendarSwift (0.1.12)
 
 DEPENDENCIES:
   - CalendarSwift (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CalendarSwift: d03783aded58707fab4d0f6be5c291f96e054faf
+  CalendarSwift: 85012f046d70743db2b96fb3391533ae53ce31e8
 
 PODFILE CHECKSUM: 5aae6270cb704c31bd193d59dca40a32f69628c5
 
