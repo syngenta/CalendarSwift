@@ -18,12 +18,15 @@ Pod::Spec.new do |s|
   s.author           = { 'Ievgen Iefimenko' => 'raketenok@gmail.com' }
   s.source           = { :git => 'https://github.com/raketenok/CalendarSwift.git', :tag => s.version }
   s.ios.deployment_target = '10.0'
-  s.source_files = 'CalendarSwift/**/*'
   s.swift_version = '4.0'
-  s.resource_bundles = {
-      'CalendarSwift' => ['CalendarSwift/Assets/**/*.{imageset}']
-  }
-  
-end
 
-#git describe --abbrev=0 --tags
+  s.resource_bundles = {
+    'CalendarSwift.resources' => [
+      'Sources/*.xcassets'
+    ]
+  }
+  s.resources = [
+    'Sources/*.xcassets'
+  ]
+  s.source_files = 'Sources/**/*.swift'
+end
