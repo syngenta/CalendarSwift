@@ -34,9 +34,9 @@ class ScrollSegmentView: UIControl {
                                 "it": ["Data", "Ano"],
                                 "uk": ["Дата", "Рік"],
                                 "es": ["Fecha", "Año"],
-                                "ru": ["Дата", "Год"]]
-    
-    
+                                "ru": ["Дата", "Год"],
+                                "ar": ["التاريخ", "السنة"]]
+
     public var style = {
         return ScrollSegmentStyle()
     }()
@@ -48,7 +48,7 @@ class ScrollSegmentView: UIControl {
     private var constraintIndLeft = NSLayoutConstraint()
     
     public private(set) var selectedIndex = 0
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.showsHorizontalScrollIndicator = false
         view.bounces = true
@@ -57,6 +57,10 @@ class ScrollSegmentView: UIControl {
         view.contentInset = UIEdgeInsets.zero
         view.contentOffset = CGPoint.zero
         view.scrollsToTop = false
+        if UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft {
+            view.semanticContentAttribute = .forceLeftToRight
+            view.transform = CGAffineTransform(scaleX: -1, y: 1)
+        }
         return view
     }()
     
@@ -181,7 +185,12 @@ class ScrollSegmentView: UIControl {
     
     
     @objc private func handleTapGesture(_ gesture: UITapGestureRecognizer) {
-        let x = gesture.location(in: self).x + scrollView.contentOffset.x
+        let tapLocation = gesture.location(in: self)
+        var x = tapLocation.x + scrollView.contentOffset.x
+
+        if UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft {
+            x = bounds.width - tapLocation.x + scrollView.contentOffset.x
+        }
         for (i, label) in titleLabels.enumerated() {
             if x >= label.frame.minX && x <= label.frame.maxX {
                 if self.selectedIndex != i {
@@ -193,7 +202,7 @@ class ScrollSegmentView: UIControl {
             }
         }
     }
-    
+
     public func setSelectIndex(index: Int, animated: Bool = true) {
         
         guard index >= 0 , index < titleLabels.count else { return }
