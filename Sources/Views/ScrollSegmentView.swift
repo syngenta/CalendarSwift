@@ -29,9 +29,9 @@ class ScrollSegmentView: UIControl {
     
     private let localization = ["en": ["Date", "Year"],
                                 "de": ["Datum", "Jahr"],
-                                "pt": ["Namorar", "Ano"],
+                                "pt": ["Data", "Ano"],
                                 "fr": ["Date", "Année"],
-                                "it": ["Data", "Ano"],
+                                "it": ["Data", "Anno"],
                                 "uk": ["Дата", "Рік"],
                                 "es": ["Fecha", "Año"],
                                 "ru": ["Дата", "Год"],
